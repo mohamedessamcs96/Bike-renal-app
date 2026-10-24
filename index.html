@@ -396,7 +396,7 @@
 
       .bike-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 20px;
       }
 
@@ -851,16 +851,17 @@
           <input id="ride-date" name="date" type="date" />
         </div>
         <div class="field">
-          <label for="ride-type">Bike style</label>
+          <label for="ride-type">Ride style</label>
           <select id="ride-type" name="type">
-            <option value="all">Any bike</option>
+            <option value="all">Any ride</option>
             <option value="city">City</option>
             <option value="electric">Electric</option>
             <option value="mountain">Mountain</option>
             <option value="road">Road</option>
+            <option value="scooter">Scooter</option>
           </select>
         </div>
-        <button class="button" type="submit"><span aria-hidden="true">⌕</span> Search bikes</button>
+        <button class="button" type="submit"><span aria-hidden="true">⌕</span> Search rides</button>
       </form>
 
       <section class="section" id="bikes" aria-labelledby="bikes-heading">
@@ -868,14 +869,15 @@
           <div>
             <div class="eyebrow"><span class="eyebrow-dot"></span> Ready when you are</div>
             <h2 id="bikes-heading">Find your kind of ride</h2>
-            <p>Well-loved bikes, good-to-go and waiting for you.</p>
+            <p>Well-loved rides, good-to-go and waiting for you.</p>
           </div>
-          <div class="category-list" role="group" aria-label="Filter bikes by type">
-            <button class="category active" type="button" data-filter="all" aria-pressed="true">All bikes</button>
+          <div class="category-list" role="group" aria-label="Filter rides by type">
+            <button class="category active" type="button" data-filter="all" aria-pressed="true">All rides</button>
             <button class="category" type="button" data-filter="city" aria-pressed="false">City</button>
             <button class="category" type="button" data-filter="electric" aria-pressed="false">Electric</button>
             <button class="category" type="button" data-filter="mountain" aria-pressed="false">Mountain</button>
             <button class="category" type="button" data-filter="road" aria-pressed="false">Road</button>
+            <button class="category" type="button" data-filter="scooter" aria-pressed="false">Scooters</button>
           </div>
         </div>
 
@@ -936,8 +938,27 @@
               </div>
             </div>
           </article>
+
+          <article class="bike-card" data-type="scooter">
+            <div
+              class="bike-image"
+              role="img"
+              aria-label="Electric scooter ready to rent"
+              style="background-image: url('https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=900&q=80')"
+            >
+              <span class="bike-tag">Zip around town</span>
+            </div>
+            <div class="bike-info">
+              <div class="bike-title-row"><h3>The City Scooter</h3><span class="rating"><span>★</span> 4.9</span></div>
+              <div class="bike-details"><span>Scooter</span><span>Up to 25 mi</span><span>Electric</span></div>
+              <div class="bike-footer">
+                <div class="price">$22 <small>/ day</small></div>
+                <button class="button rent-button" type="button" data-bike="The City Scooter">Rent this scooter</button>
+              </div>
+            </div>
+          </article>
         </div>
-        <p class="empty-state" id="empty-state">No bikes match those filters. Try another style or location.</p>
+        <p class="empty-state" id="empty-state">No rides match those filters. Try another style or location.</p>
       </section>
 
       <section class="trust-strip" id="how-it-works" aria-label="Why ride with Spoke">
@@ -964,7 +985,7 @@
         </div>
         <form id="rent-form">
           <div class="field">
-            <label for="selected-bike">Your bike</label>
+            <label for="selected-bike">Your ride</label>
             <input id="selected-bike" name="bike" readonly />
           </div>
           <div class="field">
@@ -975,7 +996,7 @@
             <label for="renter-email">Email address</label>
             <input id="renter-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
           </div>
-          <button class="button" type="submit">Request this bike</button>
+          <button class="button" type="submit">Request this ride</button>
           <p class="success-message" id="success-message" role="status">Your request is ready! The rental team will be in touch soon.</p>
         </form>
       </div>
@@ -1013,7 +1034,7 @@
         const location = document.querySelector("#location").value.trim();
         filterBikes(type);
         if (location) {
-          document.querySelector("#bikes-heading").textContent = `Bikes near ${location}`;
+          document.querySelector("#bikes-heading").textContent = `Rides near ${location}`;
         } else {
           document.querySelector("#bikes-heading").textContent = "Find your kind of ride";
         }
