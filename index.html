@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Find your ride with Spoke, a simple way to rent bikes for the day."
+    />
+    <title>Spoke — Find your ride</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17251e;
+        --muted: #718078;
+        --green: #b8e986;
+        --green-dark: #254a35;
+        --cream: #f8f8f2;
+        --line: #e7e9e0;
+        --white: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--ink);
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1160px, calc(100% - 48px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        height: 82px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: Manrope, sans-serif;
+        font-size: 23px;
+        font-weight: 800;
+        letter-spacing: -1.2px;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        background: var(--green);
+        color: var(--green-dark);
+      }
+
+      .brand-mark svg {
+        width: 21px;
+        height: 21px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 34px;
+        color: #536058;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .nav-links a:hover,
+      .sign-in:hover {
+        color: var(--green-dark);
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .sign-in {
+        color: #536058;
+      }
+
+      .button {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 20px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--ink);
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        transition: transform 160ms ease, background 160ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        background: var(--green-dark);
+      }
+
+      .button-light {
+        background: white;
+        color: var(--ink);
+      }
+
+      .button-light:hover {
+        background: var(--green);
+        color: var(--ink);
+      }
+
+      .hero {
+        min-height: 460px;
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 0.95fr;
+        align-items: center;
+        gap: 32px;
+        overflow: hidden;
+        padding: 58px 66px;
+        border-radius: 28px;
+        background: #e8f1dd;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 1;
+        max-width: 480px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #587245;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+      }
+
+      .eyebrow-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #78a34f;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: Manrope, sans-serif;
+      }
+
+      h1 {
+        max-width: 480px;
+        margin: 19px 0 16px;
+        font-size: clamp(43px, 5.4vw, 68px);
+        font-weight: 800;
+        letter-spacing: -4.4px;
+        line-height: 1.04;
+      }
+
+      h1 span {
+        color: #5d7d44;
+      }
+
+      .hero-copy > p {
+        max-width: 390px;
+        margin-bottom: 27px;
+        color: #5e6a60;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .text-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .hero-visual {
+        height: 340px;
+        position: relative;
+      }
+
+      .hero-image {
+        position: absolute;
+        inset: 0 -100px 0 0;
+        background:
+          linear-gradient(90deg, #e8f1dd 0%, rgba(232, 241, 221, 0) 28%),
+          url("https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1100&q=85")
+            center 55% / cover;
+        border-radius: 18px;
+        mix-blend-mode: multiply;
+      }
+
+      .floating-note {
+        position: absolute;
+        right: -10px;
+        bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 17px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.93);
+        box-shadow: 0 12px 35px rgba(34, 56, 40, 0.12);
+      }
+
+      .note-icon {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: #eff7e7;
+        font-size: 19px;
+      }
+
+      .floating-note strong,
+      .floating-note small {
+        display: block;
+      }
+
+      .floating-note strong {
+        font-size: 13px;
+      }
+
+      .floating-note small {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .booking-bar {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr auto;
+        align-items: center;
+        gap: 10px;
+        margin: -30px 48px 0;
+        padding: 13px;
+        border: 1px solid rgba(231, 233, 224, 0.8);
+        border-radius: 18px;
+        background: white;
+        box-shadow: 0 14px 40px rgba(34, 43, 35, 0.08);
+      }
+
+      .field {
+        min-width: 0;
+        padding: 4px 16px;
+        border-right: 1px solid var(--line);
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 7px;
+        color: #79857c;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .field input::placeholder {
+        color: #a4ada6;
+      }
+
+      .booking-bar .button {
+        min-height: 48px;
+        padding: 0 23px;
+      }
+
+      .section {
+        padding: 68px 0 24px;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+
+      .section-heading h2 {
+        margin: 9px 0 0;
+        font-size: 31px;
+        letter-spacing: -1.4px;
+      }
+
+      .section-heading p {
+        margin: 9px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .category-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .category {
+        padding: 10px 16px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: transparent;
+        color: #5e6a60;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        transition: all 150ms ease;
+      }
+
+      .category:hover,
+      .category.active {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: white;
+      }
+
+      .bike-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .bike-card {
+        overflow: hidden;
+        border: 1px solid #ebede7;
+        border-radius: 18px;
+        background: white;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .bike-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(28, 43, 33, 0.08);
+      }
+
+      .bike-image {
+        height: 205px;
+        position: relative;
+        background-color: #e7ebdf;
+        background-position: center;
+        background-size: cover;
+      }
+
+      .bike-tag {
+        position: absolute;
+        top: 13px;
+        left: 13px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.93);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .bike-info {
+        padding: 17px 18px 18px;
+      }
+
+      .bike-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 12px;
+      }
+
+      .bike-title-row h3 {
+        margin: 0;
+        font-size: 17px;
+        letter-spacing: -0.5px;
+      }
+
+      .rating {
+        flex: 0 0 auto;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .rating span {
+        color: #e7a62c;
+      }
+
+      .bike-details {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 9px 0 17px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .bike-details span + span::before {
+        content: "·";
+        margin-right: 12px;
+        color: #b7beb8;
+      }
+
+      .bike-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 14px;
+        border-top: 1px solid #eef0eb;
+      }
+
+      .price {
+        font-family: Manrope, sans-serif;
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: -0.7px;
+      }
+
+      .price small {
+        color: var(--muted);
+        font-family: "DM Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .rent-button {
+        min-height: 37px;
+        padding: 0 15px;
+        font-size: 12px;
+      }
+
+      .empty-state {
+        display: none;
+        padding: 30px;
+        border: 1px dashed #cfd5ca;
+        border-radius: 18px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .trust-strip {
+        display: flex;
+        justify-content: center;
+        gap: clamp(22px, 6vw, 75px);
+        margin: 42px 0 58px;
+        padding: 21px 16px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        color: #59655b;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .trust-strip span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .trust-strip b {
+        color: #6c9850;
+        font-size: 15px;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 0 28px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      dialog {
+        width: min(430px, calc(100% - 32px));
+        padding: 0;
+        border: 0;
+        border-radius: 20px;
+        box-shadow: 0 25px 80px rgba(13, 24, 17, 0.28);
+      }
+
+      dialog::backdrop {
+        background: rgba(17, 28, 21, 0.5);
+        backdrop-filter: blur(3px);
+      }
+
+      .dialog-content {
+        padding: 28px;
+      }
+
+      .dialog-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 20px;
+      }
+
+      .dialog-top h2 {
+        margin: 0 0 8px;
+        font-size: 23px;
+        letter-spacing: -1px;
+      }
+
+      .dialog-top p {
+        margin-bottom: 22px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .close-dialog {
+        width: 32px;
+        height: 32px;
+        flex: 0 0 auto;
+        border: 0;
+        border-radius: 50%;
+        background: #f0f2ed;
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      .dialog-content .field {
+        margin-bottom: 14px;
+        padding: 0;
+        border: 0;
+      }
+
+      .dialog-content .field input {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+
+      .dialog-content form > .button {
+        width: 100%;
+        margin-top: 5px;
+      }
+
+      .success-message {
+        display: none;
+        margin: 12px 0 0;
+        color: #315d3b;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 800px) {
+        .nav-links {
+          gap: 18px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr 0.75fr;
+          gap: 8px;
+          padding: 46px 38px;
+        }
+
+        .hero-visual {
+          height: 290px;
+        }
+
+        .hero-image {
+          right: -80px;
+        }
+
+        .booking-bar {
+          grid-template-columns: 1fr 1fr auto;
+          margin-right: 20px;
+          margin-left: 20px;
+        }
+
+        .booking-bar .field:nth-child(2) {
+          border-right: 0;
+        }
+
+        .booking-bar .field:nth-child(3) {
+          display: none;
+        }
+
+        .bike-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .shell {
+          width: min(100% - 32px, 440px);
+        }
+
+        .site-header {
+          height: 70px;
+        }
+
+        .nav-links,
+        .sign-in {
+          display: none;
+        }
+
+        .nav-actions {
+          gap: 0;
+        }
+
+        .nav-actions .button {
+          min-height: 40px;
+          padding: 0 15px;
+          font-size: 12px;
+        }
+
+        .hero {
+          min-height: auto;
+          display: block;
+          padding: 38px 25px 22px;
+          border-radius: 22px;
+        }
+
+        h1 {
+          max-width: 340px;
+          margin-top: 16px;
+          font-size: 48px;
+          letter-spacing: -3.3px;
+        }
+
+        .hero-copy > p {
+          font-size: 14px;
+        }
+
+        .hero-buttons .button {
+          min-height: 43px;
+          padding: 0 16px;
+          font-size: 12px;
+        }
+
+        .hero-visual {
+          height: 200px;
+          margin: 10px -20px 0;
+        }
+
+        .hero-image {
+          inset: 0 -20px 0 0;
+          background-position: center 57%;
+        }
+
+        .floating-note {
+          right: 0;
+          bottom: 3px;
+          padding: 9px 11px;
+        }
+
+        .note-icon {
+          width: 33px;
+          height: 33px;
+        }
+
+        .booking-bar {
+          grid-template-columns: 1fr auto;
+          gap: 5px;
+          margin: -14px 10px 0;
+          padding: 10px;
+          border-radius: 15px;
+        }
+
+        .booking-bar .field {
+          padding: 4px 8px;
+        }
+
+        .booking-bar .field:first-child {
+          border-right: 0;
+        }
+
+        .booking-bar .field:nth-child(2) {
+          display: none;
+        }
+
+        .booking-bar .button {
+          min-height: 43px;
+          padding: 0 16px;
+          font-size: 12px;
+        }
+
+        .section {
+          padding-top: 48px;
+        }
+
+        .section-heading {
+          display: block;
+        }
+
+        .section-heading h2 {
+          font-size: 26px;
+        }
+
+        .category-list {
+          margin-top: 18px;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          padding-bottom: 3px;
+        }
+
+        .category {
+          flex: 0 0 auto;
+          padding: 9px 13px;
+        }
+
+        .bike-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
+        .bike-image {
+          height: 220px;
+        }
+
+        .trust-strip {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+          margin: 30px 0;
+          padding: 20px 6px;
+        }
+
+        footer {
+          flex-direction: column;
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header shell">
+      <a class="brand" href="#" aria-label="Spoke home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="17" r="4" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="18" cy="17" r="4" stroke="currentColor" stroke-width="1.8" />
+            <path d="m6 17 4-8 5 8H6Zm4-8h4m1 0h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        spoke
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#bikes">Explore bikes</a>
+        <a href="#how-it-works">How it works</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="sign-in" href="#bikes">Sign in</a>
+        <a class="button" href="#bikes">Find a bike <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Your next ride starts here</div>
+          <h1 id="hero-title">Good days are <span>ride</span> days.</h1>
+          <p>Find your perfect bike, pick your pace, and see where the day takes you.</p>
+          <div class="hero-buttons">
+            <a class="button" href="#bikes">Explore bikes <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-image"></div>
+          <div class="floating-note">
+            <div class="note-icon">🌿</div>
+            <div><strong>Take the scenic route</strong><small>Good for you. Better for the planet.</small></div>
+          </div>
+        </div>
+      </section>
+
+      <form class="booking-bar" id="search-form" role="search">
+        <div class="field">
+          <label for="location">Where are you riding?</label>
+          <input id="location" name="location" type="search" placeholder="Enter a city or ZIP code" />
+        </div>
+        <div class="field">
+          <label for="ride-date">Pick-up date</label>
+          <input id="ride-date" name="date" type="date" />
+        </div>
+        <div class="field">
+          <label for="ride-type">Bike style</label>
+          <select id="ride-type" name="type">
+            <option value="all">Any bike</option>
+            <option value="city">City</option>
+            <option value="electric">Electric</option>
+            <option value="mountain">Mountain</option>
+            <option value="road">Road</option>
+          </select>
+        </div>
+        <button class="button" type="submit"><span aria-hidden="true">⌕</span> Search bikes</button>
+      </form>
+
+      <section class="section" id="bikes" aria-labelledby="bikes-heading">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-dot"></span> Ready when you are</div>
+            <h2 id="bikes-heading">Find your kind of ride</h2>
+            <p>Well-loved bikes, good-to-go and waiting for you.</p>
+          </div>
+          <div class="category-list" role="group" aria-label="Filter bikes by type">
+            <button class="category active" type="button" data-filter="all" aria-pressed="true">All bikes</button>
+            <button class="category" type="button" data-filter="city" aria-pressed="false">City</button>
+            <button class="category" type="button" data-filter="electric" aria-pressed="false">Electric</button>
+            <button class="category" type="button" data-filter="mountain" aria-pressed="false">Mountain</button>
+            <button class="category" type="button" data-filter="road" aria-pressed="false">Road</button>
+          </div>
+        </div>
+
+        <div class="bike-grid" id="bike-grid">
+          <article class="bike-card" data-type="city">
+            <div
+              class="bike-image"
+              role="img"
+              aria-label="Classic city bicycle"
+              style="background-image: url('https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=900&q=80')"
+            >
+              <span class="bike-tag">Easy rider</span>
+            </div>
+            <div class="bike-info">
+              <div class="bike-title-row"><h3>The City Cruiser</h3><span class="rating"><span>★</span> 4.9</span></div>
+              <div class="bike-details"><span>City</span><span>7-speed</span><span>Comfort seat</span></div>
+              <div class="bike-footer">
+                <div class="price">$18 <small>/ day</small></div>
+                <button class="button rent-button" type="button" data-bike="The City Cruiser">Rent this bike</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="bike-card" data-type="electric">
+            <div
+              class="bike-image"
+              role="img"
+              aria-label="Electric bicycle ready for a ride"
+              style="background-image: url('https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=900&q=80')"
+            >
+              <span class="bike-tag">Go a little further</span>
+            </div>
+            <div class="bike-info">
+              <div class="bike-title-row"><h3>The Easy E-Ride</h3><span class="rating"><span>★</span> 5.0</span></div>
+              <div class="bike-details"><span>Electric</span><span>Up to 40 mi</span><span>Pedal assist</span></div>
+              <div class="bike-footer">
+                <div class="price">$35 <small>/ day</small></div>
+                <button class="button rent-button" type="button" data-bike="The Easy E-Ride">Rent this bike</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="bike-card" data-type="mountain">
+            <div
+              class="bike-image"
+              role="img"
+              aria-label="Mountain bike for off-road trails"
+              style="background-image: url('https://images.unsplash.com/photo-1541625602330-2277f4c46182?auto=format&fit=crop&w=900&q=80')"
+            >
+              <span class="bike-tag">Find your trail</span>
+            </div>
+            <div class="bike-info">
+              <div class="bike-title-row"><h3>The Trail Seeker</h3><span class="rating"><span>★</span> 4.8</span></div>
+              <div class="bike-details"><span>Mountain</span><span>21-speed</span><span>Front suspension</span></div>
+              <div class="bike-footer">
+                <div class="price">$28 <small>/ day</small></div>
+                <button class="button rent-button" type="button" data-bike="The Trail Seeker">Rent this bike</button>
+              </div>
+            </div>
+          </article>
+        </div>
+        <p class="empty-state" id="empty-state">No bikes match those filters. Try another style or location.</p>
+      </section>
+
+      <section class="trust-strip" id="how-it-works" aria-label="Why ride with Spoke">
+        <span><b>✓</b> Helmets included</span>
+        <span><b>✓</b> Easy pick-up</span>
+        <span><b>✓</b> Free cancellation</span>
+        <span><b>✓</b> Local rider support</span>
+      </section>
+
+      <footer>
+        <span>© 2025 Spoke Bike Rentals</span>
+        <span>Made for the joy of getting there.</span>
+      </footer>
+    </main>
+
+    <dialog id="rent-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-content">
+        <div class="dialog-top">
+          <div>
+            <h2 id="dialog-title">Make it a ride day</h2>
+            <p id="dialog-description">Tell us where to reach you and we’ll get your bike ready.</p>
+          </div>
+          <button class="close-dialog" type="button" aria-label="Close dialog">×</button>
+        </div>
+        <form id="rent-form">
+          <div class="field">
+            <label for="selected-bike">Your bike</label>
+            <input id="selected-bike" name="bike" readonly />
+          </div>
+          <div class="field">
+            <label for="renter-name">Your name</label>
+            <input id="renter-name" name="name" autocomplete="name" required placeholder="Alex Rider" />
+          </div>
+          <div class="field">
+            <label for="renter-email">Email address</label>
+            <input id="renter-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+          </div>
+          <button class="button" type="submit">Request this bike</button>
+          <p class="success-message" id="success-message" role="status">Your request is ready! The rental team will be in touch soon.</p>
+        </form>
+      </div>
+    </dialog>
+
+    <script>
+      const bikeCards = [...document.querySelectorAll(".bike-card")];
+      const categoryButtons = [...document.querySelectorAll(".category")];
+      const emptyState = document.querySelector("#empty-state");
+      const dialog = document.querySelector("#rent-dialog");
+      const rentForm = document.querySelector("#rent-form");
+
+      function filterBikes(type) {
+        let visibleCount = 0;
+        bikeCards.forEach((card) => {
+          const matches = type === "all" || card.dataset.type === type;
+          card.hidden = !matches;
+          if (matches) visibleCount += 1;
+        });
+        emptyState.style.display = visibleCount ? "none" : "block";
+        categoryButtons.forEach((button) => {
+          const selected = button.dataset.filter === type;
+          button.classList.toggle("active", selected);
+          button.setAttribute("aria-pressed", String(selected));
+        });
+      }
+
+      categoryButtons.forEach((button) => {
+        button.addEventListener("click", () => filterBikes(button.dataset.filter));
+      });
+
+      document.querySelector("#search-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const type = document.querySelector("#ride-type").value;
+        const location = document.querySelector("#location").value.trim();
+        filterBikes(type);
+        if (location) {
+          document.querySelector("#bikes-heading").textContent = `Bikes near ${location}`;
+        } else {
+          document.querySelector("#bikes-heading").textContent = "Find your kind of ride";
+        }
+        document.querySelector("#bikes").scrollIntoView({ behavior: "smooth" });
+      });
+
+      document.querySelectorAll(".rent-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelector("#selected-bike").value = button.dataset.bike;
+          document.querySelector("#success-message").style.display = "none";
+          rentForm.querySelector('button[type="submit"]').hidden = false;
+          dialog.showModal();
+        });
+      });
+
+      document.querySelector(".close-dialog").addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      rentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        document.querySelector("#success-message").style.display = "block";
+        rentForm.querySelector('button[type="submit"]').hidden = true;
+      });
+    </script>
+  </body>
+</html>
