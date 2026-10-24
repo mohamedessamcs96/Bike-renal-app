@@ -349,6 +349,91 @@
         padding: 68px 0 24px;
       }
 
+      .nearby-panel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        margin: 44px 0 0;
+        padding: 25px 28px;
+        border: 1px solid #e5eadf;
+        border-radius: 20px;
+        background: #f0f5e9;
+      }
+
+      .nearby-copy {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .nearby-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        background: white;
+        color: var(--green-dark);
+        font-size: 21px;
+      }
+
+      .nearby-copy h2 {
+        margin: 1px 0 5px;
+        font-size: 19px;
+        letter-spacing: -0.6px;
+      }
+
+      .nearby-copy p {
+        max-width: 470px;
+        margin: 0;
+        color: #68756b;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .nearby-action {
+        flex: 0 0 auto;
+        text-align: right;
+      }
+
+      .nearby-status {
+        min-height: 18px;
+        margin: 8px 0 0;
+        color: #536058;
+        font-size: 12px;
+      }
+
+      .nearby-results {
+        display: none;
+        flex: 0 0 100%;
+        gap: 10px;
+        padding-top: 16px;
+        border-top: 1px solid #dce5d5;
+      }
+
+      .nearby-results a {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 14px;
+        border: 1px solid #dbe4d4;
+        border-radius: 999px;
+        background: white;
+        color: var(--green-dark);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .nearby-results a:hover {
+        border-color: var(--green-dark);
+      }
+
+      .nearby-panel.has-results {
+        flex-wrap: wrap;
+      }
+
       .section-heading {
         display: flex;
         align-items: end;
@@ -651,6 +736,23 @@
           display: none;
         }
 
+        .nearby-panel {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 16px;
+          margin-top: 30px;
+          padding: 20px;
+        }
+
+        .nearby-action {
+          width: 100%;
+          text-align: left;
+        }
+
+        .nearby-results {
+          flex-wrap: wrap;
+        }
+
         .bike-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -864,6 +966,24 @@
         <button class="button" type="submit"><span aria-hidden="true">⌕</span> Search rides</button>
       </form>
 
+      <section class="nearby-panel" id="nearby" aria-labelledby="nearby-heading">
+        <div class="nearby-copy">
+          <div class="nearby-icon" aria-hidden="true">⌖</div>
+          <div>
+            <h2 id="nearby-heading">Find rentals near you</h2>
+            <p>Use your location to search Google Maps for nearby bike or scooter rentals. Your location is only used to create these map links.</p>
+          </div>
+        </div>
+        <div class="nearby-action">
+          <button class="button" id="nearby-button" type="button">Use my location <span aria-hidden="true">→</span></button>
+          <p class="nearby-status" id="nearby-status" role="status" aria-live="polite">Your browser will ask before sharing your location.</p>
+        </div>
+        <div class="nearby-results" id="nearby-results" aria-label="Nearby rental searches">
+          <a id="nearby-bikes-link" href="#" target="_blank" rel="noopener noreferrer">⌖ Find bike rentals <span aria-hidden="true">↗</span></a>
+          <a id="nearby-scooters-link" href="#" target="_blank" rel="noopener noreferrer">⌖ Find scooter rentals <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+
       <section class="section" id="bikes" aria-labelledby="bikes-heading">
         <div class="section-heading">
           <div>
@@ -1026,6 +1146,47 @@
 
       categoryButtons.forEach((button) => {
         button.addEventListener("click", () => filterBikes(button.dataset.filter));
+      });
+
+      const nearbyButton = document.querySelector("#nearby-button");
+      const nearbyStatus = document.querySelector("#nearby-status");
+      const nearbyResults = document.querySelector("#nearby-results");
+
+      nearbyButton.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          nearbyStatus.textContent = "Location is not supported by this browser. Enter a city or ZIP code above instead.";
+          return;
+        }
+
+        nearbyButton.disabled = true;
+        nearbyStatus.textContent = "Finding your location…";
+        nearbyResults.style.display = "none";
+        document.querySelector("#nearby").classList.remove("has-results");
+
+        navigator.geolocation.getCurrentPosition(
+          ({ coords }) => {
+            const position = `${coords.latitude},${coords.longitude}`;
+            const mapSearchUrl = (ride) =>
+              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${ride} rental near ${position}`)}`;
+
+            document.querySelector("#nearby-bikes-link").href = mapSearchUrl("bike");
+            document.querySelector("#nearby-scooters-link").href = mapSearchUrl("scooter");
+            nearbyStatus.textContent = "Your location is ready. Choose a search to see nearby rental places on Google Maps.";
+            nearbyResults.style.display = "flex";
+            document.querySelector("#nearby").classList.add("has-results");
+            nearbyButton.disabled = false;
+          },
+          (error) => {
+            const messages = {
+              1: "Location permission was denied. Allow it in your browser settings or enter a city or ZIP code above.",
+              2: "Your location couldn't be determined. Try again or enter a city or ZIP code above.",
+              3: "Location lookup timed out. Try again or enter a city or ZIP code above.",
+            };
+            nearbyStatus.textContent = messages[error.code] || "Unable to get your location. Try again or enter a city or ZIP code above.";
+            nearbyButton.disabled = false;
+          },
+          { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
+        );
       });
 
       document.querySelector("#search-form").addEventListener("submit", (event) => {
